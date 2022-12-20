@@ -1,5 +1,5 @@
 function getComputerSelection(){
-    let selection = Math.random(0, 3);
+    let selection = Math.floor(Math.random()*4);
     if (selection == 0){
         return "Rock";
     }
@@ -14,12 +14,11 @@ function playRound(playerSelection, computerSelection = getComputerSelection()){
     if (playerSelection == computerSelection){
         return "Draw!"
     }else if ((playerSelection == "Rock" && computerSelection == "Scissors") || ( playerSelection == "Paper" && computerSelection == "Rock") || (playerSelection == "Scissors" && computerSelection == "Paper")){
-        return `You Win! ${playerSelection} beats ${computerSelection}`;
         playerWins ++;
-
+        return `You Win! ${playerSelection} beats ${computerSelection}`;
     } else {
-        return `You Lose! ${computerSelection} beats ${playerSelection}`;
         computerWins++;
+        return `You Lose! ${computerSelection} beats ${playerSelection}`;
     }
 }
 
@@ -35,8 +34,12 @@ function game(){
 }
 game();
 
-if (computerWins > playerWins){
-    console.log("Computer Wins");
+if (computerWins == playerWins){
+    console.log("Its a draw")
+}else if (computerWins > playerWins){
+    console.log(`Computer Wins ${computerWins} to ${playerWins}`);
 }else{
-    console.log("Player Wins");
+    console.log(`Plyaer Wins ${playerWins} to ${computerWins}`);
 }
+
+
