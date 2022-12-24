@@ -12,34 +12,67 @@ function getComputerSelection(){
 
 function playRound(playerSelection, computerSelection = getComputerSelection()){
     if (playerSelection == computerSelection){
-        return "Draw!"
+        displayResult("Draw!");
     }else if ((playerSelection == "Rock" && computerSelection == "Scissors") || ( playerSelection == "Paper" && computerSelection == "Rock") || (playerSelection == "Scissors" && computerSelection == "Paper")){
         playerWins ++;
-        return `You Win! ${playerSelection} beats ${computerSelection}`;
+        displayResult(`You Win! ${playerSelection} beats ${computerSelection}`);
     } else {
         computerWins++;
-        return `You Lose! ${computerSelection} beats ${playerSelection}`;
+        displayResult(`You Lose! ${computerSelection} beats ${playerSelection}`);
+    }
+    displayScore();
+    if(computerWins == 5 || playerWins == 5){
+        if(computerWins == 5){
+            displayResult(`Computer Wins`);
+            restart();
+        }else{
+            displayResult(`Player Wins`);
+            restart(); 
+        }
     }
 }
+
+function displayResult(string){
+    result.textContent = string;
+}
+function displayScore(){
+    p_score.textContent = `${playerWins}`;
+    c_score.textContent = `${computerWins}`;
+}
+
+function restart(){
+    //FIX ME:
+    choices.forEach((choice) =>{
+        choice.removeEventListener('click',  event => playRound(event.target.textContent));
+    });
+
+    const restart_bt = document.createElement('button');
+    restart_bt.classList.add('restart');
+    restart_bt.textContent = `Restart`;
+    restart_bt.addEventListener('click', () => {reset()});
+    scoreboard.appendChild(restart_bt);
+}
+
+function reset(){
+    result.textContent = `Humans vs Computers`;
+    p_score.textContent = `0`;
+    c_score.textContent = `0`;
+    playerWins = 0;
+    computerWins = 0;
+    scoreboard.removeChild(scoreboard.lastChild);
+}
+
+const scoreboard = document.querySelector('.scoreboard');
+const choices = Array.from(document.querySelectorAll('.choice'));
+choices.forEach((choice) =>{
+    choice.addEventListener('click',  event => playRound(event.target.id));
+});
+
+const p_score = document.querySelector('.p_score');
+const c_score = document.querySelector('.c_score');
+const result = document.querySelector('.result');
 
 let computerWins = 0;
 let playerWins = 0;
-
-function game(){
-    for(let i = 0; i<5; i++){
-        let playerChoice = prompt("Rock, Paper or Scissors?").toLowerCase();
-        playerChoice = playerChoice[0].toUpperCase() + playerChoice.slice(1);
-        console.log(playRound(playerChoice));
-    }
-}
-game();
-
-if (computerWins == playerWins){
-    console.log("Its a draw")
-}else if (computerWins > playerWins){
-    console.log(`Computer Wins ${computerWins} to ${playerWins}`);
-}else{
-    console.log(`Plyaer Wins ${playerWins} to ${computerWins}`);
-}
 
 
